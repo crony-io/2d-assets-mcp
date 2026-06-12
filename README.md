@@ -24,6 +24,35 @@ Each generated PNG embeds rich JSON metadata (dimensions, color, shape, descript
 
 ---
 
+## Security Considerations
+
+This MCP server has direct file system access to generate assets. Please review these security implications:
+
+### File System Access
+
+- The server can write files to any path specified by the AI assistant
+- **Recommendation:** Configure your AI client to restrict access to specific project directories when possible
+- **Warning:** Be cautious when asking the AI to generate assets outside your project directory
+
+### Path Traversal
+
+- The server validates paths but you should still be aware of potential path traversal attempts
+- Always review generated file paths before confirming operations
+
+### Asset Content
+
+- Generated assets are placeholder graphics and contain no malicious code
+- Embedded metadata is plain JSON and does not execute code
+
+### Best Practices
+
+- Use absolute paths in configurations to prevent ambiguity
+- Restrict AI access to your game project directory only
+- Review generated assets before committing to version control
+- Keep your Node.js dependencies updated
+
+---
+
 ## Features
 
 - **Single asset generation** — one tool call, one PNG, full visual configuration

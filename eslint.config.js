@@ -29,7 +29,7 @@ export default defineConfig(
   {
     settings: {
       'import-x/resolver': {
-        node: true, 
+        node: true,
         typescript: {
           alwaysTryTypes: true,
           project: './tsconfig.json',
@@ -37,7 +37,7 @@ export default defineConfig(
           extensionAlias: {
             '.js': ['.ts', '.tsx', '.d.ts', '.js'],
             '.jsx': ['.tsx', '.d.ts', '.jsx'],
-            '.mjs': ['.mts', '.d.mts', '.mjs']
+            '.mjs': ['.mts', '.d.mts', '.mjs'],
           },
         },
       },
@@ -81,7 +81,8 @@ export default defineConfig(
         {
           types: {
             unknown: {
-              message: 'Use of `unknown` is forbidden. Please define a more specific type or interface.',
+              message:
+                'Use of `unknown` is forbidden. Please define a more specific type or interface.',
             },
           },
         },

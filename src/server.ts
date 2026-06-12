@@ -13,7 +13,7 @@ import { registerReadMetadataTool } from '#src/tools/readMetadata.js';
 export function createServer(): McpServer {
   const server = new McpServer({
     name: '2d-assets-mcp',
-    version: '0.1.0',
+    version: '0.1.1',
   });
 
   registerGenerateSingleTool(server);

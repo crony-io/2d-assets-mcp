@@ -5,7 +5,11 @@ import sharp from 'sharp';
 
 import { embedMetadata } from '#src/image/metadata.js';
 import { buildAssetSvgMarkup } from '#src/svg/builder.js';
-import type { AssetConfig, AssetMetadata, SpritesheetParams } from '#src/types.js';
+import type {
+  AssetConfig,
+  AssetMetadata,
+  SpritesheetParams,
+} from '#src/types.js';
 import { ensureDirectory } from '#src/utils/fs.js';
 import { sanitizeFileBaseName } from '#src/utils/string.js';
 

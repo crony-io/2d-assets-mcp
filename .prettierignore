@@ -5,3 +5,6 @@ package-lock.json
 pnpm-lock.yaml
 yarn.lock
 README.md
+SECURITY.md
+CHANGELOG.md
+CONTRIBUTING.md

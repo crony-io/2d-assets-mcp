@@ -2,7 +2,9 @@
  * Escapes special XML/SVG characters in a value so it is safe to embed
  * inside SVG text elements or attribute values.
  */
-export function escapeXml(value: string | number | boolean | null | undefined): string {
+export function escapeXml(
+  value: string | number | boolean | null | undefined,
+): string {
   return String(value)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')

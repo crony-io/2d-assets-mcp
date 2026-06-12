@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.0] - 2026-06-12
 
 ### Added
+
 - Initial release of 2d-assets-mcp
 - `generate_mock_asset` tool for single PNG asset generation
 - `generate_mock_asset_batch` tool for batch asset and spritesheet generation
@@ -18,3 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Auto-scaling text with rotation support
 - Embedded JSON metadata in PNG EXIF data
 - Spritesheet composition mode with configurable margin and spacing
+
+## [0.1.1] - 2026-10-12
+
+### Changed
+
+- Updated version to 0.1.1
+

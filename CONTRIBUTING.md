@@ -43,6 +43,7 @@ Thank you for your interest in contributing to 2d-assets-mcp! This document prov
 ### Running the Project
 
 - **Development mode** (no build needed):
+
   ```bash
   pnpm run dev
   # or
@@ -50,6 +51,7 @@ Thank you for your interest in contributing to 2d-assets-mcp! This document prov
   ```
 
 - **Build the project**:
+
   ```bash
   pnpm run build
   # or
@@ -74,6 +76,7 @@ npm run check
 ```
 
 This runs:
+
 - Format check (`prettier`)
 - Linting (`eslint`)
 - Type checking (`tsc`)
@@ -102,6 +105,7 @@ All checks must pass with zero errors.
 ### Commit Messages
 
 Use clear, descriptive commit messages:
+
 - `feat: add support for circular shapes`
 - `fix: correct spritesheet margin calculation`
 - `docs: update installation instructions`
@@ -128,6 +132,7 @@ Use clear, descriptive commit messages:
 ### Manual Testing
 
 Test your changes with Claude Desktop or other MCP clients:
+
 1. Build the project: `pnpm run build`
 2. Configure your MCP client to use the built `dist/index.js`
 3. Test the new or modified tools

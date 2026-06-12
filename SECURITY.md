@@ -3,9 +3,9 @@
 ## Supported Versions
 
 | Version | Supported |
-|---------|-----------|
+| ------- | --------- |
 | 0.1.x   | ✅        |
-| < 0.1.0 | ❌        |
+| < 0.1.1 | ❌        |
 
 ## Reporting a Vulnerability
 
@@ -51,10 +51,12 @@ This project is an MCP server that generates PNG images and writes them to disk.
 ## Dependency Security
 
 This project uses the following main dependencies:
+
 - `@modelcontextprotocol/sdk` - MCP protocol implementation
 - `sharp` - Image processing library
 - `zod` - Schema validation
 
 We regularly update dependencies to address security vulnerabilities. Users are encouraged to:
+
 - Run `pnpm audit` to check for known vulnerabilities
 - Keep Node.js updated to the latest LTS version

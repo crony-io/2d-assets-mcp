@@ -24,5 +24,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Updated version to 0.1.1
-
+Prepare release 0.1.1: update version across package.json, server.json, and server.ts; add a 0.1.1 entry in CHANGELOG.md. Add docs files to .prettierignore, tidy CONTRIBUTING.md and SECURITY.md content, and remove the long minimumReleaseAgeExclude list from pnpm-workspace.yaml. Apply small code/style tweaks: remove xmlns from generated SVG tag, format imports and signatures in utils, and minor ESLint config formatting fixes.

@@ -1,0 +1,82 @@
+{
+  "name": "2d-assets-mcp",
+  "version": "0.1.0",
+  "description": "MCP server for generating mock 2D PNG assets for Games prototypes",
+  "homepage": "https://github.com/crony-io/2d-assets-mcp",
+  "bugs": {
+    "url": "https://github.com/crony-io/2d-assets-mcp/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/crony-io/2d-assets-mcp.git"
+  },
+  "mcpName": "io.github.crony-io/2d-assets-mcp",
+  "license": "MIT",
+  "author": "Rafael Andrews",
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "2d",
+    "assets",
+    "sprites",
+    "game-development",
+    "godot",
+    "Unity",
+    "GameMaker",
+    "Construct",
+    "RPG Maker",
+    "Defold",
+    "Cocos2d",
+    "Phaser",
+    "Love2D",
+    "png",
+    "placeholder",
+    "prototyping",
+    "ai",
+    "claude",
+    "devin",
+    "cursor",
+    "codex"
+  ],
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "2d-assets-mcp": "dist/index.js"
+  },
+  "imports": {
+    "#src/*": "./dist/*"
+  },
+  "scripts": {
+    "build": "node -e \"fs.rmSync('dist', { recursive: true, force: true })\" && tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format:check": "prettier . --check",
+    "format": "prettier --write .",
+    "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "sharp": "^0.35.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@types/node": "^25.9.3",
+    "eslint": "^10.4.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-import-x": "^4.16.2",
+    "globals": "^17.6.0",
+    "prettier": "^3.8.4",
+    "tsx": "^4.22.4",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.61.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

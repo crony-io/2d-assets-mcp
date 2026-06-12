@@ -1,0 +1,9 @@
+node_modules/
+.prettierrc
+.prettierignore
+eslint.config.js
+pnpm-workspace.yaml
+pnpm-lock.yaml
+.git/
+.gitignore
+.vscode/

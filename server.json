@@ -1,0 +1,23 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.crony-io/2d-assets-mcp",
+  "title": "2D Assets MCP",
+  "description": "MCP server for generating advanced mock 2D PNG assets for game prototypes.",
+  "repository": {
+    "url": "https://github.com/crony-io/2d-assets-mcp",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "websiteUrl": "https://github.com/crony-io/2d-assets-mcp",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "2d-assets-mcp",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "name": "2d-assets-mcp",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "MCP server for generating mock 2D PNG assets for Games prototypes",
   "homepage": "https://github.com/crony-io/2d-assets-mcp",
   "bugs": {

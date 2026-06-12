@@ -7,3 +7,6 @@ pnpm-lock.yaml
 .git/
 .gitignore
 .vscode/
+src/
+tsconfig.json
+test_assets_mcp/

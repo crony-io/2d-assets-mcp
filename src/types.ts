@@ -136,6 +136,20 @@ export interface AssetMetadata {
   trackColor?: string | null;
   pattern?: string;
   description?: string | null;
+  // gradient properties (only if fillMode is gradient)
+  secondaryColor?: string;
+  gradientAngle?: number;
+  // pattern properties (only if pattern is not 'none')
+  patternColor?: string;
+  patternOpacity?: number;
+  patternScale?: number;
+  // text properties
+  textRotation?: number;
+  textPosition?: string;
+  fontSize?: number;
+  // stroke properties
+  strokeColor?: string;
+  strokeWidth?: number;
   // spritesheet-specific optional fields
   totalWidth?: number;
   totalHeight?: number;
@@ -146,6 +160,30 @@ export interface AssetMetadata {
   frameHeight?: number;
   margin?: number;
   spacing?: number;
-  // Allow additional arbitrary properties
-  [key: string]: string | number | boolean | null | undefined;
+  // spritesheet frames array
+  frames?: Array<{
+    index: number;
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+    name?: string;
+    description?: string | null;
+    color?: string;
+    shape?: string;
+    fillMode?: string;
+    fillPercent?: number;
+    trackColor?: string | null;
+    pattern?: string;
+    secondaryColor?: string;
+    gradientAngle?: number;
+    patternColor?: string;
+    patternOpacity?: number;
+    patternScale?: number;
+    textRotation?: number;
+    textPosition?: string;
+    fontSize?: number;
+    strokeColor?: string;
+    strokeWidth?: number;
+  }>;
 }

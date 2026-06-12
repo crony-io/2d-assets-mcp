@@ -42,6 +42,24 @@ export async function createAssetBuffer(
     trackColor: asset.trackColor ?? null,
     pattern: asset.pattern ?? 'none',
     description: asset.assetDescription ?? null,
+    // gradient properties (only include if fillMode is gradient)
+    ...(asset.fillMode !== 'solid' && {
+      secondaryColor: asset.secondaryColor,
+      gradientAngle: asset.gradientAngle,
+    }),
+    // pattern properties (only include if pattern is not 'none')
+    ...(asset.pattern !== 'none' && {
+      patternColor: asset.patternColor,
+      patternOpacity: asset.patternOpacity,
+      patternScale: asset.patternScale,
+    }),
+    // text properties (always include, they have defaults)
+    textRotation: asset.textRotation,
+    textPosition: asset.textPosition,
+    ...(asset.fontSize !== undefined && { fontSize: asset.fontSize }),
+    // stroke properties (always include, they have defaults)
+    strokeColor: asset.strokeColor,
+    strokeWidth: asset.strokeWidth,
     createdAt: new Date().toISOString(),
     ...extraMeta,
   };
@@ -122,7 +140,51 @@ export async function createSpriteSheetFile({
 
     return { input: assetBuffers[index], left: x, top: y };
   });
+  // Build frames array with individual frame metadata
+  const frames = assets.map((asset, index) => {
+    const col = index % resolvedColumns;
+    const row = Math.floor(index / resolvedColumns);
+    const x =
+      margin +
+      col * (maxWidth + spacing) +
+      Math.floor((maxWidth - (asset.width ?? 128)) / 2);
+    const y =
+      margin +
+      row * (maxHeight + spacing) +
+      Math.floor((maxHeight - (asset.height ?? 128)) / 2);
 
+    return {
+      index,
+      x,
+      y,
+      width: asset.width ?? 128,
+      height: asset.height ?? 128,
+      name: sanitizeFileBaseName(
+        asset.filename || asset.text || `frame_${index}`,
+      ),
+      description: asset.assetDescription ?? null,
+      color: asset.color,
+      shape: asset.shape ?? 'rectangle',
+      fillMode: asset.fillMode ?? 'solid',
+      fillPercent: asset.fillPercent ?? 100,
+      trackColor: asset.trackColor ?? null,
+      pattern: asset.pattern ?? 'none',
+      ...(asset.fillMode !== 'solid' && {
+        secondaryColor: asset.secondaryColor,
+        gradientAngle: asset.gradientAngle,
+      }),
+      ...(asset.pattern !== 'none' && {
+        patternColor: asset.patternColor,
+        patternOpacity: asset.patternOpacity,
+        patternScale: asset.patternScale,
+      }),
+      textRotation: asset.textRotation,
+      textPosition: asset.textPosition,
+      ...(asset.fontSize !== undefined && { fontSize: asset.fontSize }),
+      strokeColor: asset.strokeColor,
+      strokeWidth: asset.strokeWidth,
+    };
+  });
   // Create transparent canvas and composite all frames onto it
   const rawSheetBuffer = await sharp({
     create: {
@@ -148,6 +210,7 @@ export async function createSpriteSheetFile({
     frameHeight: maxHeight,
     margin,
     spacing,
+    frames,
     createdAt: new Date().toISOString(),
     ...sheetMeta,
   };

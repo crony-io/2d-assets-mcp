@@ -20,7 +20,7 @@ This MCP is engine-agnostic and works with any game engine that supports PNG imp
 
 Create placeholder sprites, UI elements, health bars, spritesheets, and more with full support for gradients, patterns, transparency, text rotation, and auto-scaling — all without opening an image editor.
 
-Each generated PNG embeds rich JSON metadata (dimensions, color, shape, description) directly in its EXIF data, so AI models without vision can still understand what an asset contains.
+Each generated PNG embeds rich JSON metadata (dimensions, color, shape, gradient properties, pattern details, text properties, stroke properties, description) directly in its EXIF data, so AI models without vision can still understand what an asset contains.
 
 ---
 
@@ -120,61 +120,61 @@ Generates a single PNG asset and writes it to disk. Supports gradients, patterns
 
 **Required parameters**
 
-| Parameter | Type | Description |
-|---|---|---|
-| `filename` | `string` | Output filename, e.g. `player_idle.png` |
-| `directory` | `string` | Absolute path to the output folder (created if missing) |
-| `text` | `string` | Label rendered on the asset |
-| `color` | `string` | Background hex color, e.g. `#FF5733` |
+| Parameter     | Type     | Description                                             |
+|---------------|----------|---------------------------------------------------------|
+| `filename`    | `string` | Output filename, e.g. `player_idle.png`                 |
+| `directory`   | `string` | Absolute path to the output folder (created if missing) |
+| `text`        | `string` | Label rendered on the asset                             |
+| `color`       | `string` | Background hex color, e.g. `#FF5733`                    |
 
 **Optional parameters — shape & size**
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `width` | `number` | `128` | Width in pixels |
-| `height` | `number` | `128` | Height in pixels |
-| `shape` | `rectangle` \| `rounded-rectangle` \| `circle` | `rectangle` | Geometric shape |
-| `opacity` | `number` `0–1` | `1.0` | Background opacity |
-| `strokeColor` | `string` | `#000000` | Border hex color |
-| `strokeWidth` | `number` | `4` | Border width in px; `0` removes the border |
+| Parameter     | Type                                           | Default     | Description                                |
+|---------------|------------------------------------------------|-------------|--------------------------------------------|
+| `width`       | `number`                                       | `128`       | Width in pixels                            |
+| `height`      | `number`                                       | `128`       | Height in pixels                           |
+| `shape`       | `rectangle` \| `rounded-rectangle` \| `circle` | `rectangle` | Geometric shape                            |
+| `opacity`     | `number` `0–1`                                 | `1.0`       | Background opacity                         |
+| `strokeColor` | `string`                                       | `#000000`   | Border hex color                           |
+| `strokeWidth` | `number`                                       | `4`         | Border width in px; `0` removes the border |
 
 **Optional parameters — fill & gradient**
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `fillMode` | `solid` \| `linear-gradient` \| `radial-gradient` | `solid` | Background fill type |
-| `secondaryColor` | `string` | auto-derived | Second gradient stop; auto-shaded from `color` if omitted |
-| `gradientAngle` | `number` | `45` | Angle in degrees for linear gradients (ignored for radial) |
+| Parameter        | Type                                              | Default      | Description                                                |
+|------------------|---------------------------------------------------|--------------|------------------------------------------------------------|
+| `fillMode`       | `solid` \| `linear-gradient` \| `radial-gradient` | `solid`      | Background fill type                                       |
+| `secondaryColor` | `string`                                          | auto-derived | Second gradient stop; auto-shaded from `color` if omitted  |
+| `gradientAngle`  | `number`                                          | `45`         | Angle in degrees for linear gradients (ignored for radial) |
 
 **Optional parameters — progress/health bar**
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `fillPercent` | `number` `0–100` | `100` | How much of the asset is filled (left to right) |
-| `trackColor` | `string` | — | Color of the unfilled portion; transparent if omitted |
+| Parameter     | Type             | Default | Description                                           |
+|---------------|------------------|---------|-------------------------------------------------------|
+| `fillPercent` | `number` `0–100` | `100`   | How much of the asset is filled (left to right)       |
+| `trackColor`  | `string`         |    —    | Color of the unfilled portion; transparent if omitted |
 
 **Optional parameters — pattern overlay**
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `pattern` | `none` \| `stripes` \| `dots` \| `grid` | `none` | Pattern overlay type |
-| `patternColor` | `string` | auto-derived | Pattern color; contrast-auto if omitted |
-| `patternOpacity` | `number` `0–1` | `0.18` | Pattern overlay opacity |
-| `patternScale` | `number` `≥2` | `16` | Pattern tile size in pixels |
+| Parameter        | Type                                    | Default           | Description                             |
+|------------------|-----------------------------------------|-------------------|-----------------------------------------|
+| `pattern`        | `none` \| `stripes` \| `dots` \| `grid` | `none`            | Pattern overlay type                    |
+| `patternColor`   | `string`                                | auto-derived      | Pattern color; contrast-auto if omitted |
+| `patternOpacity` | `number` `0–1`                          | `0.18`            | Pattern overlay opacity                 |
+| `patternScale`   | `number` `≥2`                           | `16`              | Pattern tile size in pixels             |
 
 **Optional parameters — text**
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `textPosition` | `center` \| `top` \| `bottom` | `center` | Vertical text alignment |
-| `fontSize` | `number` | auto-scaled | Explicit font size in px; auto-fits if omitted |
-| `textRotation` | `number` | `0` | Text rotation angle in degrees |
+| Parameter        | Type                            | Default           | Description                                    |
+|------------------|---------------------------------|-------------------|------------------------------------------------|
+| `textPosition`   | `center` \| `top` \| `bottom`   | `center`          | Vertical text alignment                        |
+| `fontSize`       | `number`                        | auto-scaled       | Explicit font size in px; auto-fits if omitted |
+| `textRotation`   | `number`                        | `0`               | Text rotation angle in degrees                 |
 
 **Optional parameters — metadata**
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `assetDescription` | `string` | — | Human-readable description embedded in the PNG EXIF for non-vision AI context |
+| Parameter          | Type     | Default | Description                                                                   |
+|--------------------|----------|---------|-------------------------------------------------------------------------------|
+| `assetDescription` | `string` | —       | Human-readable description embedded in the PNG EXIF for non-vision AI context |
 
 </details>
 
@@ -197,19 +197,19 @@ Generates multiple assets in one request. Supports individual PNGs or a single c
 
 **Required parameters**
 
-| Parameter | Type | Description |
-|---|---|---|
-| `assets` | `AssetConfig[]` | Array of asset configs (same fields as `generate_mock_asset`) |
+| Parameter | Type            | Description                                                   |
+|-----------|-----------------|---------------------------------------------------------------|
+| `assets`  | `AssetConfig[]` | Array of asset configs (same fields as `generate_mock_asset`) |
 
 **Optional parameters**
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `spritesheetMode` | `individual` \| `spritesheet` | `spritesheet` | `individual` writes separate PNGs; `spritesheet` composes a single PNG |
-| `sheetFilename` | `string` | `spritesheet.png` | Output filename for the spritesheet |
-| `sheetDirectory` | `string` | first asset's directory | Output directory for the spritesheet |
-| `sheetMargin` | `number` | `8` | Outer padding around the spritesheet in pixels |
-| `sheetSpacing` | `number` | `8` | Gap between frames in pixels |
+| Parameter         | Type                         | Default                 | Description                                                            |
+|-------------------|------------------------------|-------------------------|------------------------------------------------------------------------|
+| `spritesheetMode` | `individual` \ `spritesheet` | `spritesheet`           | `individual` writes separate PNGs; `spritesheet` composes a single PNG |
+| `sheetFilename`   | `string`                     | `spritesheet.png`       | Output filename for the spritesheet                                    |
+| `sheetDirectory`  | `string`                     | first asset's directory | Output directory for the spritesheet                                   |
+| `sheetMargin`     | `number`                     | `8`                     | Outer padding around the spritesheet in pixels                         |
+| `sheetSpacing`    | `number`                     | `8`                     | Gap between frames in pixels                                           |
 
 </details>
 
@@ -232,9 +232,9 @@ Reads the JSON metadata embedded in the EXIF `ImageDescription` field of any PNG
 
 **Required parameters**
 
-| Parameter | Type | Description |
-|---|---|---|
-| `filepath` | `string` | Absolute path to the PNG file |
+| Parameter  | Type     | Description                     |
+|------------|----------|---------------------------------|
+| `filepath` | `string` | Absolute path to the PNG file   |
 
 </details>
 
@@ -259,6 +259,12 @@ Reading it back uses a deliberate bypass of standard TIFF byte-walking: instead 
   "fillPercent": 100,
   "trackColor": null,
   "pattern": "none",
+  "secondaryColor": "#2E5A8A",
+  "gradientAngle": 45,
+  "textRotation": 0,
+  "textPosition": "center",
+  "strokeColor": "#000000",
+  "strokeWidth": 4,
   "description": "Player idle placeholder, blue rounded rectangle 128x128",
   "createdAt": "2025-01-15T10:30:00.000Z"
 }
@@ -279,6 +285,18 @@ Reading it back uses a deliberate bypass of standard TIFF byte-walking: instead 
   "frameHeight": 128,
   "margin": 8,
   "spacing": 8,
+  "frames": [
+    {
+      "index": 0,
+      "x": 8,
+      "y": 8,
+      "width": 128,
+      "height": 128,
+      "name": "frame_0",
+      "color": "#4A90E2",
+      "shape": "rounded-rectangle"
+    }
+  ],
   "createdAt": "2025-01-15T10:30:00.000Z"
 }
 ```
@@ -475,13 +493,13 @@ yarn install
 
 ### Scripts
 
-| Command | Description |
-|---|---|
-| `npm run build` / `pnpm build` | Compile TypeScript to `dist/` |
-| `npm run dev` / `pnpm dev` | Run directly from source with `tsx` (no build needed) |
-| `npm start` / `pnpm start` | Run the compiled server from `dist/` |
-| `npm run typecheck` / `pnpm typecheck` | Type-check without emitting files |
-| `npm run check` / `pnpm check` | Run all checks: format, lint, and typecheck |
+| Command                                    | Description                                           |
+|--------------------------------------------|-------------------------------------------------------|
+| `npm run build` / `pnpm run build`         | Compile TypeScript to `dist/`                         |
+| `npm run dev` / `pnpm run dev`             | Run directly from source with `tsx` (no build needed) |
+| `npm run start` / `pnpm run start`         | Run the compiled server from `dist/`                  |
+| `npm run typecheck` / `pnpm run typecheck` | Type-check without emitting files                     |
+| `npm run check` / `pnpm run check`         | Run all checks: format, lint, and typecheck           |
 
 ---
 
@@ -503,7 +521,7 @@ MIT — see [LICENSE](LICENSE) for full text.
 
 Issues and pull requests are welcome. Before opening a PR:
 
-1. Run `npm run check` or `pnpm check` — zero errors required
+1. Run `npm run check` or `pnpm run check` — zero errors required
 2. Keep new tools in their own file under `src/tools/`
 3. Export new types from `src/types.ts` and schemas from `src/schemas.ts`
 4. Update this README's **Tools Reference** section for any new or changed parameters

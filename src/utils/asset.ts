@@ -10,8 +10,31 @@ import type {
   AssetMetadata,
   SpritesheetParams,
 } from '#src/types.js';
+import { ensureHexPrefix } from '#src/utils/color.js';
 import { ensureDirectory } from '#src/utils/fs.js';
 import { sanitizeFileBaseName } from '#src/utils/string.js';
+
+/**
+ * Helper to normalize all color fields in an asset, guaranteeing the '#' prefix.
+ */
+function normalizeAssetColors(asset: AssetConfig): AssetConfig {
+  return {
+    ...asset,
+    color: asset.color ? ensureHexPrefix(asset.color) : asset.color,
+    trackColor: asset.trackColor
+      ? ensureHexPrefix(asset.trackColor)
+      : asset.trackColor,
+    strokeColor: asset.strokeColor
+      ? ensureHexPrefix(asset.strokeColor)
+      : asset.strokeColor,
+    secondaryColor: asset.secondaryColor
+      ? ensureHexPrefix(asset.secondaryColor)
+      : asset.secondaryColor,
+    patternColor: asset.patternColor
+      ? ensureHexPrefix(asset.patternColor)
+      : asset.patternColor,
+  };
+}
 
 /**
  * Renders a single asset configuration into a PNG Buffer with embedded metadata.
@@ -21,10 +44,13 @@ export async function createAssetBuffer(
   asset: AssetConfig,
   extraMeta: Record<string, string | number | boolean | null> = {},
 ): Promise<Buffer> {
+  // Normalize the payload
+  const normAsset = normalizeAssetColors(asset);
+
   const idPrefix = sanitizeFileBaseName(
-    asset.filename || asset.text || 'asset',
+    normAsset.filename || normAsset.text || 'asset',
   );
-  const svgMarkup = buildAssetSvgMarkup({ ...asset, idPrefix });
+  const svgMarkup = buildAssetSvgMarkup({ ...normAsset, idPrefix });
 
   // Rasterize SVG → raw PNG buffer (no metadata yet)
   const rawBuffer = await sharp(Buffer.from(svgMarkup)).png().toBuffer();
@@ -32,34 +58,34 @@ export async function createAssetBuffer(
   const meta: AssetMetadata = {
     generator: '2d-assets-mcp',
     type: 'asset',
-    name: sanitizeFileBaseName(asset.filename || asset.text || 'asset'),
-    width: asset.width ?? 128,
-    height: asset.height ?? 128,
-    color: asset.color,
-    shape: asset.shape ?? 'rectangle',
-    fillMode: asset.fillMode ?? 'solid',
-    fillPercent: asset.fillPercent ?? 100,
-    trackColor: asset.trackColor ?? null,
-    pattern: asset.pattern ?? 'none',
-    description: asset.assetDescription ?? null,
+    name: sanitizeFileBaseName(normAsset.filename || normAsset.text || 'asset'),
+    width: normAsset.width ?? 128,
+    height: normAsset.height ?? 128,
+    color: normAsset.color,
+    shape: normAsset.shape ?? 'rectangle',
+    fillMode: normAsset.fillMode ?? 'solid',
+    fillPercent: normAsset.fillPercent ?? 100,
+    trackColor: normAsset.trackColor ?? null,
+    pattern: normAsset.pattern ?? 'none',
+    description: normAsset.assetDescription ?? null,
     // gradient properties (only include if fillMode is gradient)
-    ...(asset.fillMode !== 'solid' && {
-      secondaryColor: asset.secondaryColor,
-      gradientAngle: asset.gradientAngle,
+    ...(normAsset.fillMode !== 'solid' && {
+      secondaryColor: normAsset.secondaryColor,
+      gradientAngle: normAsset.gradientAngle,
     }),
     // pattern properties (only include if pattern is not 'none')
-    ...(asset.pattern !== 'none' && {
-      patternColor: asset.patternColor,
-      patternOpacity: asset.patternOpacity,
-      patternScale: asset.patternScale,
+    ...(normAsset.pattern !== 'none' && {
+      patternColor: normAsset.patternColor,
+      patternOpacity: normAsset.patternOpacity,
+      patternScale: normAsset.patternScale,
     }),
     // text properties (always include, they have defaults)
-    textRotation: asset.textRotation,
-    textPosition: asset.textPosition,
-    ...(asset.fontSize !== undefined && { fontSize: asset.fontSize }),
+    textRotation: normAsset.textRotation,
+    textPosition: normAsset.textPosition,
+    ...(normAsset.fontSize !== undefined && { fontSize: normAsset.fontSize }),
     // stroke properties (always include, they have defaults)
-    strokeColor: asset.strokeColor,
-    strokeWidth: asset.strokeWidth,
+    strokeColor: normAsset.strokeColor,
+    strokeWidth: normAsset.strokeWidth,
     createdAt: new Date().toISOString(),
     ...extraMeta,
   };
@@ -108,24 +134,27 @@ export async function createSpriteSheetFile({
 
   ensureDirectory(directory);
 
+  // Normalize all incoming assets before mapping
+  const normAssets = assets.map(normalizeAssetColors);
+
   // Force single-row layout (traditional animation strip)
-  const resolvedColumns = assets.length;
+  const resolvedColumns = normAssets.length;
   const rows = 1;
 
   // Render all individual asset buffers in parallel
   const assetBuffers = await Promise.all(
-    assets.map((asset) => createAssetBuffer(asset)),
+    normAssets.map((asset) => createAssetBuffer(asset)),
   );
 
-  const maxWidth = Math.max(...assets.map((a) => a.width ?? 128));
-  const maxHeight = Math.max(...assets.map((a) => a.height ?? 128));
+  const maxWidth = Math.max(...normAssets.map((a) => a.width ?? 128));
+  const maxHeight = Math.max(...normAssets.map((a) => a.height ?? 128));
 
   const sheetWidth =
     margin * 2 + resolvedColumns * maxWidth + (resolvedColumns - 1) * spacing;
   const sheetHeight = margin * 2 + rows * maxHeight + (rows - 1) * spacing;
 
   // Center each frame within its cell to handle assets smaller than maxWidth/maxHeight
-  const composites = assets.map((asset, index) => {
+  const composites = normAssets.map((asset, index) => {
     const col = index % resolvedColumns;
     const row = Math.floor(index / resolvedColumns);
 
@@ -141,7 +170,7 @@ export async function createSpriteSheetFile({
     return { input: assetBuffers[index], left: x, top: y };
   });
   // Build frames array with individual frame metadata
-  const frames = assets.map((asset, index) => {
+  const frames = normAssets.map((asset, index) => {
     const col = index % resolvedColumns;
     const row = Math.floor(index / resolvedColumns);
     const x =
@@ -205,7 +234,7 @@ export async function createSpriteSheetFile({
     totalHeight: sheetHeight,
     columns: resolvedColumns,
     rows,
-    frameCount: assets.length,
+    frameCount: normAssets.length,
     frameWidth: maxWidth,
     frameHeight: maxHeight,
     margin,

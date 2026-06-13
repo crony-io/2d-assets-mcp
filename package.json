@@ -55,7 +55,7 @@
     "lint:fix": "eslint . --fix",
     "format:check": "prettier . --check",
     "format": "prettier --write .",
-    "check": "pnpm run format:check && pnpm run lint && pnpm run typecheck"
+    "check": "pnpm run lint && pnpm run typecheck && pnpm run format:check"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",

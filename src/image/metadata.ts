@@ -37,7 +37,9 @@ export async function embedMetadata(
 export function extractJsonMetadataFromExif(
   buf: Buffer | null | undefined,
 ): string | null {
-  if (!buf) return null;
+  if (!buf) {
+    return null;
+  }
 
   try {
     const str = buf.toString('utf8');
@@ -46,12 +48,16 @@ export function extractJsonMetadataFromExif(
     const searchStr = '"generator":"2d-assets-mcp"';
     const searchIdx = str.indexOf(searchStr);
 
-    if (searchIdx === -1) return null;
+    if (searchIdx === -1) {
+      return null;
+    }
 
     // Back-track to the nearest opening brace before the identifier
     const startIdx = str.lastIndexOf('{', searchIdx);
 
-    if (startIdx === -1) return null;
+    if (startIdx === -1) {
+      return null;
+    }
 
     // EXIF ASCII fields are null-terminated; find the closing null byte
     let endIdx = str.indexOf('\0', startIdx);
@@ -61,7 +67,9 @@ export function extractJsonMetadataFromExif(
       endIdx = str.lastIndexOf('}') + 1;
     }
 
-    if (endIdx <= startIdx) return null;
+    if (endIdx <= startIdx) {
+      return null;
+    }
 
     return str.substring(startIdx, endIdx);
   } catch {
@@ -81,11 +89,15 @@ export async function readEmbeddedMetadata(
   try {
     const metadata = await sharp(filepath).metadata();
 
-    if (!metadata.exif) return null;
+    if (!metadata.exif) {
+      return null;
+    }
 
     const descString = extractJsonMetadataFromExif(metadata.exif);
 
-    if (!descString) return null;
+    if (!descString) {
+      return null;
+    }
 
     return JSON.parse(descString) as AssetMetadata;
   } catch {

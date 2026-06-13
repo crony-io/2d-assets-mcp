@@ -87,3 +87,17 @@ export function getLuminance(hex: string): number {
 export function getContrastingTextColor(referenceHex: string): string {
   return getLuminance(referenceHex) > 0.55 ? '#111111' : '#FFFFFF';
 }
+
+/**
+ * Ensures a hex color string has a '#' prefix.
+ * for handling when LLM outputs omit it.
+ */
+export function ensureHexPrefix(hex: string): string {
+  const trimmed = String(hex).trim();
+
+  if (!trimmed) {
+    return trimmed;
+  }
+
+  return trimmed.startsWith('#') ? trimmed : `#${trimmed}`;
+}

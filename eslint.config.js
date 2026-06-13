@@ -59,6 +59,7 @@ export default defineConfig(
   ts.configs.recommended,
 
   {
+    files: ['**/*.ts', '**/*.tsx', '**/*.js'],
     languageOptions: {
       parser: ts.parser,
       ecmaVersion: 'latest',
@@ -74,7 +75,7 @@ export default defineConfig(
       'no-var': 'error',
       'prefer-const': 'error',
       'eqeqeq': ['error', 'always'],
-      'no-unused-vars': 'error', // TypeScript handles this better
+      'no-unused-vars': 'error',
       '@typescript-eslint/no-explicit-any': 'error',
       '@typescript-eslint/no-restricted-types': [
         'error',
@@ -143,4 +144,13 @@ export default defineConfig(
 
   // This turns off all core ESLint rules that conflict with Prettier formatting.
   prettierConfig,
+  {
+    plugins: {
+      '@stylistic': stylistic,
+    },
+    rules: {
+      'curly': ['error', 'all'],
+      '@stylistic/brace-style': ['error', '1tbs', { allowSingleLine: false }],
+    },
+  },
 );

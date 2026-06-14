@@ -1,5 +1,9 @@
 # 2d-assets-mcp
 
+
+_Design your game's **feel** before you design its **art**._
+
+
 [![](https://badge.mcpx.dev?type=server 'MCP Server')](https://modelcontextprotocol.io/introduction)
 [![npm version](https://img.shields.io/npm/v/2d-assets-mcp)](https://www.npmjs.com/package/2d-assets-mcp)
 [![npm downloads](https://img.shields.io/npm/dm/2d-assets-mcp)](https://www.npmjs.com/package/2d-assets-mcp)
@@ -7,66 +11,33 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white 'TypeScript')](https://www.typescriptlang.org/)
 
 
-An **[MCP (Model Context Protocol)](https://modelcontextprotocol.io/) server** that generates advanced mock 2D PNG assets for games prototypes — directly from any MCP-compatible AI client such as Claude Desktop.
+Just like wireframing helps designers visualize user flows before start sketching, _2d-assets-mcp_ helps game developers visualize timing, frames-per-second (FPS), collision boundaries, and UI layouts before spending hours on final artwork.
 
-This MCP is engine-agnostic and works with any game engine that supports PNG import:
+This **[MCP (Model Context Protocol)](https://modelcontextprotocol.io/)** server lets **any** AI assistant (Antigravity, Claude Code, Codex, Devin, or any of them as long as it's MCP-compatible) generate advanced 2D mock/placeholder assets in PNG format right into your project folder. Save time and prototype faster, nail your game's feel with **2d-assets-mcp**, and then replace the mockups with original artwork when you are ready. 
+
+
+This MCP is **engine-agnostic** and it works flawlessly with any game engine that supports PNG import, like:
 - Godot
 - Unity
 - Unreal Engine
 - GameMaker
 - Construct
 - RPG Maker
-- And many more...
+- And many more!
 
-Create placeholder sprites, UI elements, health bars, spritesheets, and more with full support for gradients, patterns, transparency, text rotation, and auto-scaling — all without opening an image editor.
+Save time and create placeholder health bars, spritesheets, and whatever UI elements you can think of with full support for gradients, patterns, transparency, text rotation, and auto-scaling, all via chat and without ever opening an image editor.
+The idea behind it is to help you test and iterate how your game feels first by prototiping scale, jump arcs, and animation timing without waiting on final art assets, and also with zero friction: Need that placeholder button to be 20% larger? Just ask your AI client to regenerate it.
 
-Each generated PNG embeds rich JSON metadata (dimensions, color, shape, gradient properties, pattern details, text properties, stroke properties, description) directly in its EXIF data, so AI models without vision can still understand what an asset contains.
 
----
+> [!TIP]
+> 2d-assets-mcp has AI-Friendly Metadata **→** meaning each generated PNG embeds rich JSON metadata (dimensions, color, shape, gradient properties, pattern details, text properties, stroke properties, description) **directly** in its EXIF data, so AI models **without vision can still understand** what an asset contains.
 
-## Security Considerations
-
-This MCP server has direct file system access to generate assets. Please review these security implications:
-
-### File System Access
-
-- The server can write files to any path specified by the AI assistant
-- **Recommendation:** Configure your AI client to restrict access to specific project directories when possible
-- **Warning:** Be cautious when asking the AI to generate assets outside your project directory
-
-### Path Traversal
-
-- The server validates paths but you should still be aware of potential path traversal attempts
-- Always review generated file paths before confirming operations
-
-### Asset Content
-
-- Generated assets are placeholder graphics and contain no malicious code
-- Embedded metadata is plain JSON and does not execute code
-
-### Best Practices
-
-- Use absolute paths in configurations to prevent ambiguity
-- Restrict AI access to your game project directory only
-- Review generated assets before committing to version control
-- Keep your Node.js dependencies updated
-
----
-
-## Features
-
-- **Single asset generation** — one tool call, one PNG, full visual configuration
-- **Batch + spritesheet mode** — generate multiple assets or composite them into a single animation-strip spritesheet in one request
-- **Rich visual options** — solid fills, linear/radial gradients, stripe/dot/grid pattern overlays, rounded corners, circles, opacity, and border control
-- **Progress/health bar fills** — `fillPercent` + `trackColor` for partially-filled assets
-- **Auto-scaling text** — labels fit the asset; override with explicit `fontSize` if needed
-- **Embedded JSON metadata** — readable back via `read_image_metadata` without loading image pixels, ideal for non-vision AI workflows
-- **Filename dimensions** — output files are named `player_idle_128x128.png` automatically to help models with no vision know the dimensions when using the asset
----
 
 ### Generated Assets Examples
 
 Here are some example assets generated by this MCP server:
+
+![full_assets_example.gif](test_assets_mcp/full_assets_example.gif)
 
 #### Character Sprites & Animations
 
@@ -106,19 +77,60 @@ Here are some example assets generated by this MCP server:
 
 *4-frame run animation spritesheet with progressive blue shades*
 
----
+
+
+## Security Considerations
+
+### Asset Content
+
+- Generated assets are pure placeholder graphics and they do not contain malicious code.
+- Embedded metadata is plain JSON and is not executable.
+
+
+### Because this MCP server writes files directly to your machine to save you time, please review these security best practices:
+
+#### File System Access
+
+- The server can write files to any path specified by the AI assistant.
+- **Recommendation:** Configure your AI client to restrict access strictly to your game's project directories.
+- **Warning:** Be cautious when asking the AI to generate assets outside your project directory.
+
+#### Path Traversal
+
+- This server validates paths, but you should always be aware of potential path traversal attempts when dealing with MCP servers, and **review** generated file paths before confirming operations.
+
+#### Overall Best Practices
+
+- Use absolute paths in configurations to prevent ambiguity.
+- Restrict AI access to your game project directory only.
+- Review generated assets before committing to version control.
+- Keep your Node.js dependencies updated.
+
+
+
+## Core Features
+
+- **Instant asset generation**: one tool call, one PNG, full visual configuration.
+- **Spritesheet & Batch mode**: generate multiple frames or composite them into a single animation-strip spritesheet in one request.
+- **Rich visuals**: support for solid fills, linear/radial gradients, stripe/dot/grid pattern overlays, rounded corners, circles, opacity, and stroke control.
+- **Dynamic UI Elements**: create partially filled progress/health bars using `fillPercent` and `trackColor` for partially-filled assets.
+- **Auto-scaling labels**: text automatically scales to fit the asset, or you can override it with explicit `fontSize` if needed.
+- **Non-vision AI friendly**: embedded JSON metadata readable back via `read_image_metadata`, without loading image pixels, ideal for non-vision AI workflows.
+- **Smart naming**: output files are automatically named with their dimensions (e.g. `player_idle_128x128.png`) to help models with no vision know the dimensions when using the asset.
+
+
+
 ## Tools Reference
 
-This MCP server provides 3 tools for generating and reading 2D asset metadata.
+This MCP server equips your AI with 3 tools to generate and read 2D asset metadata.
 
 ### 1. `generate_mock_asset`
-
-Generates a single PNG asset and writes it to disk. Supports gradients, patterns, transparency, text rotation, and embedded metadata.
+Generates a single PNG asset and writes it to the disk. It supports gradients, patterns, transparency, text rotation, and embedded metadata.
 
 <details>
-<summary><strong>Parameters (click to expand)</strong></summary>
+<summary><strong>Parameters (press to expand)</strong></summary>
 
-**Required parameters**
+*Required parameters*
 
 | Parameter     | Type     | Description                                             |
 |---------------|----------|---------------------------------------------------------|
@@ -127,7 +139,8 @@ Generates a single PNG asset and writes it to disk. Supports gradients, patterns
 | `text`        | `string` | Label rendered on the asset                             |
 | `color`       | `string` | Background hex color, e.g. `#FF5733`                    |
 
-**Optional parameters — shape & size**
+
+**Optional parameters:** _shape & size_
 
 | Parameter     | Type                                           | Default     | Description                                |
 |---------------|------------------------------------------------|-------------|--------------------------------------------|
@@ -138,7 +151,8 @@ Generates a single PNG asset and writes it to disk. Supports gradients, patterns
 | `strokeColor` | `string`                                       | `#000000`   | Border hex color                           |
 | `strokeWidth` | `number`                                       | `4`         | Border width in px; `0` removes the border |
 
-**Optional parameters — fill & gradient**
+
+**Optional parameters:** _fill & gradient_
 
 | Parameter        | Type                                              | Default      | Description                                                |
 |------------------|---------------------------------------------------|--------------|------------------------------------------------------------|
@@ -146,14 +160,16 @@ Generates a single PNG asset and writes it to disk. Supports gradients, patterns
 | `secondaryColor` | `string`                                          | auto-derived | Second gradient stop; auto-shaded from `color` if omitted  |
 | `gradientAngle`  | `number`                                          | `45`         | Angle in degrees for linear gradients (ignored for radial) |
 
-**Optional parameters — progress/health bar**
+
+**Optional parameters:** _progress/health bar_
 
 | Parameter     | Type             | Default | Description                                           |
 |---------------|------------------|---------|-------------------------------------------------------|
 | `fillPercent` | `number` `0–100` | `100`   | How much of the asset is filled (left to right)       |
 | `trackColor`  | `string`         |    —    | Color of the unfilled portion; transparent if omitted |
 
-**Optional parameters — pattern overlay**
+
+**Optional parameters:** _pattern overlay_
 
 | Parameter        | Type                                    | Default           | Description                             |
 |------------------|-----------------------------------------|-------------------|-----------------------------------------|
@@ -162,7 +178,8 @@ Generates a single PNG asset and writes it to disk. Supports gradients, patterns
 | `patternOpacity` | `number` `0–1`                          | `0.18`            | Pattern overlay opacity                 |
 | `patternScale`   | `number` `≥2`                           | `16`              | Pattern tile size in pixels             |
 
-**Optional parameters — text**
+
+**Optional parameters:** _text_
 
 | Parameter        | Type                            | Default           | Description                                    |
 |------------------|---------------------------------|-------------------|------------------------------------------------|
@@ -170,7 +187,8 @@ Generates a single PNG asset and writes it to disk. Supports gradients, patterns
 | `fontSize`       | `number`                        | auto-scaled       | Explicit font size in px; auto-fits if omitted |
 | `textRotation`   | `number`                        | `0`               | Text rotation angle in degrees                 |
 
-**Optional parameters — metadata**
+
+**Optional parameters:** _metadata_
 
 | Parameter          | Type     | Default | Description                                                                   |
 |--------------------|----------|---------|-------------------------------------------------------------------------------|
@@ -178,7 +196,10 @@ Generates a single PNG asset and writes it to disk. Supports gradients, patterns
 
 </details>
 
-**Output filename format**
+
+
+> [!NOTE]
+> **Output filename format**
 
 The server automatically appends the dimensions to the filename before writing:
 
@@ -186,16 +207,16 @@ The server automatically appends the dimensions to the filename before writing:
 player_idle.png  →  player_idle_128x128.png
 ```
 
----
+
 
 ### 2. `generate_mock_asset_batch`
 
 Generates multiple assets in one request. Supports individual PNGs or a single composed spritesheet.
 
 <details>
-<summary><strong>Parameters (click to expand)</strong></summary>
+<summary><strong>Parameters (press to expand)</strong></summary>
 
-**Required parameters**
+*Required parameters*
 
 | Parameter | Type            | Description                                                   |
 |-----------|-----------------|---------------------------------------------------------------|
@@ -206,14 +227,16 @@ Generates multiple assets in one request. Supports individual PNGs or a single c
 | Parameter         | Type                         | Default                 | Description                                                            |
 |-------------------|------------------------------|-------------------------|------------------------------------------------------------------------|
 | `spritesheetMode` | `individual` \ `spritesheet` | `spritesheet`           | `individual` writes separate PNGs; `spritesheet` composes a single PNG |
-| `sheetFilename`   | `string`                     | `spritesheet.png`       | Output filename for the spritesheet                                    |
+| `sheetFilename`   | `string`                     | `spritesheet.png`       | Output filename for the composed spritesheet                                    |
 | `sheetDirectory`  | `string`                     | first asset's directory | Output directory for the spritesheet                                   |
 | `sheetMargin`     | `number`                     | `8`                     | Outer padding around the spritesheet in pixels                         |
-| `sheetSpacing`    | `number`                     | `8`                     | Gap between frames in pixels                                           |
+| `sheetSpacing`    | `number`                     | `8`                     | Gap between animation frames in pixels                                           |
 
 </details>
 
-**Spritesheet layout**
+
+> [!NOTE]
+> **Spritesheet layout**
 
 All assets are arranged in a single row (traditional animation strip). Each frame cell is sized to the largest asset in the batch; smaller assets are centered within their cell. The output filename includes the total sheet dimensions:
 
@@ -221,16 +244,16 @@ All assets are arranged in a single row (traditional animation strip). Each fram
 player_run.png  →  player_run_648x136.png
 ```
 
----
+
 
 ### 3. `read_image_metadata`
 
-Reads the JSON metadata embedded in the EXIF `ImageDescription` field of any PNG generated by this server. Useful for AI models that lack vision — they can understand what an asset contains without decoding the image.
+Reads the JSON metadata embedded in the EXIF `ImageDescription` field of any PNG generated by this server. Useful for AI models that lack vision, because they can understand what an asset contains without decoding the image.
 
 <details>
-<summary><strong>Parameters (click to expand)</strong></summary>
+<summary><strong>Parameters (press to expand)</strong></summary>
 
-**Required parameters**
+*Required parameters*
 
 | Parameter  | Type     | Description                     |
 |------------|----------|---------------------------------|
@@ -238,13 +261,15 @@ Reads the JSON metadata embedded in the EXIF `ImageDescription` field of any PNG
 
 </details>
 
-**How metadata embedding works**
+#### **How metadata embedding works**
 
 Metadata is stored as a JSON string in the PNG's EXIF `IFD0.ImageDescription` field using the `sharp` library's `withMetadata` API.
 
 Reading it back uses a deliberate bypass of standard TIFF byte-walking: instead of parsing the binary TIFF structure, the raw EXIF buffer is scanned as a UTF-8 string for the known `"generator":"2d-assets-mcp"` key, then the surrounding JSON object is extracted. This makes the reader immune to TIFF padding, byte-order variations, and unusual IFD layouts across different PNG writers.
 
-**Example response**
+
+<details>
+<summary><strong>Example response (press to expand)</strong></summary>
 
 ```json
 {
@@ -300,32 +325,34 @@ Reading it back uses a deliberate bypass of standard TIFF byte-walking: instead 
   "createdAt": "2025-01-15T10:30:00.000Z"
 }
 ```
+</details>
 
 ---
 
-## Usage Examples
+## Example Prompts for Your AI
 
-Below are example prompts you can give Claude Desktop once the server is connected.
+Once connected to an AI coding assistant, try these prompts to speed up your workflow:
 
 **Single asset**
 > "Create a 128×128 blue rounded-rectangle placeholder for my player character at `C:\Users\me\project\assets\sprites\` (Windows) or `/home/me/project/assets/sprites/` (Linux) or `/Users/me/project/assets/sprites/` (macOS). Label it 'Player' and give it a radial gradient."
 
 **Health bar**
-> "Generate a health bar PNG at 200×24 pixels, filled 65%, red fill color, dark gray track, at your project's UI folder. Call the file `health_bar.png`."
+> "Generate a health bar PNG at 200×24 pixels, filled 65%, thin stroke, red fill color, dark gray track, at your project's UI folder. Call the file `health_bar.png`."
 
 **Spritesheet**
-> "Create a 4-frame run cycle spritesheet for my player. Each frame should be 64×64, different shades of blue, labeled Frame 1 through Frame 4. Save it to your project's sprites folder."
+> "Create a 4-frame run cycle spritesheet for my player. Each frame should be 64×64, different shades of blue, labeled Frame 1 through Frame 4. Save it to my project's sprites folder."
 
 **Read metadata**
-> "Read the metadata from your project's sprites folder, file `player_idle_128x128.png`."
+> "Read the metadata from my project's sprites folder, file `player_idle_128x128.png`."
+
 
 ---
 
 ## Installation
 
-### Option 1 — Use directly with `npx` (no install required)
+### Option 1: Use directly with `npx` (no install required)
 
-The fastest way to connect it to Claude Desktop:
+The fastest way to connect it to any AI coding assistant:
 
 ```json
 {
@@ -337,30 +364,41 @@ The fastest way to connect it to Claude Desktop:
   }
 }
 ```
-### Option 2 — Manual installation with package manager (npm, pnpm, yarn)
+### Option 2: Manual installation with package manager (pnpm, npm, yarn)
 
+**1. Clone the repository**
 ```bash
 git clone https://github.com/crony-io/2d-assets-mcp.git
 cd 2d-assets-mcp
-
-# Choose your package manager:
-pnpm install   # recommended
-# or
-npm install
-# or
-yarn install
-
-# build
-pnpm run build
-# or
-npm run build
-# or
-yarn run build
 ```
 
+**2. Install dependencies**
+```bash
+pnpm install   # recommended
+# or: npm install
+# or: yarn install
+```
 
+**3. Build the project**
+```bash
+pnpm run build
+# or: npm run build
+# or: yarn run build
+```
 
-### Option 3 — Install globally with npm or pnpm
+**4. Configure your MCP client**
+```json
+{
+  "mcpServers": {
+    "2d-assets-mcp": {
+      "command": "node",
+      "args": ["/absolute/path/to/2d-assets-mcp/dist/index.js"]
+    }
+  }
+}
+```
+
+### Option 3: Install globally with pnpm or npm
 
 This project works with any Node.js package manager. Choose your preferred one:
 
@@ -386,9 +424,9 @@ Then reference the installed binary:
 }
 ```
 
-### Claude Code
+### Claude Code / Claude Desktop
 
-Add to your Claude Code MCP settings:
+Add to your Claude Code/Claude Desktop MCP settings:
 
 ```json
 {
@@ -432,51 +470,12 @@ Create `.cursor/mcp.json` in your project:
 }
 ```
 
----
-
-## Claude Desktop Configuration
-
-Open your Claude Desktop config file and add the server under `mcpServers`.
-
-**macOS** — `~/Library/Application Support/Claude/claude_desktop_config.json`
-
-**Windows** — `%APPDATA%\Claude\claude_desktop_config.json`
-
-**Linux** — `~/.config/Claude/claude_desktop_config.json`
-
-### Using npx (recommended — always runs latest version)
-
-```json
-{
-  "mcpServers": {
-    "2d-assets": {
-      "command": "npx",
-      "args": ["-y", "2d-assets-mcp"]
-    }
-  }
-}
-```
-
-### Using a global install
-
-```json
-{
-  "mcpServers": {
-    "2d-assets": {
-      "command": "2d-assets-mcp"
-    }
-  }
-}
-```
-
----
-
 ## Development
 
 ### Prerequisites
 
 - Node.js 18 or later
-- npm 9 or later **or** pnpm 8 or later (any package manager works)
+- pnpm 8 or later **or** npm 9 or later (any package manager works)
 
 ### Setup
 
@@ -501,7 +500,7 @@ yarn install
 | `npm run typecheck` / `pnpm run typecheck` | Type-check without emitting files                     |
 | `npm run check` / `pnpm run check`         | Run all checks: format, lint, and typecheck           |
 
----
+
 
 ### Adding a new tool
 
@@ -509,7 +508,7 @@ yarn install
 2. Import and call it in `src/server.ts`
 3. Add any new Zod schemas to `src/schemas.ts` and types to `src/types.ts`
 
----
+
 
 ## License
 
@@ -519,9 +518,9 @@ MIT — see [LICENSE](LICENSE) for full text.
 
 ## Contributing
 
-Issues and pull requests are welcome. Before opening a PR:
+Issues and pull requests are always welcome. Just please, before you open a PR make sure to:
 
-1. Run `npm run check` or `pnpm run check` — zero errors required
-2. Keep new tools in their own file under `src/tools/`
-3. Export new types from `src/types.ts` and schemas from `src/schemas.ts`
-4. Update this README's **Tools Reference** section for any new or changed parameters
+1. Run `pnpm run check` or `npm run check` (zero errors required).
+2. Keep new tools in their own file under `src/tools/`.
+3. Export new types from `src/types.ts` and schemas from `src/schemas.ts`.
+4. Update this README's **Tools Reference** section for any new or changed parameters.
